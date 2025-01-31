@@ -5,21 +5,22 @@ import { Movie } from "../types/ResponseType";
 
 interface MovieCardProps {
   movie: Movie;
-  isFav: boolean;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie, isFav }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   return (
     <div className="movie-card">
       <div className="fav-icon">
-        <button>
+        <button
+          title={movie.isFave ? "Remove from Favorites" : "Add to Favorites"}
+        >
           <img
             src={
-              isFav
+              movie.isFave
                 ? "https://img.icons8.com/ios-filled/50/FF0000/like--v1.png"
                 : "https://img.icons8.com/ios-filled/50/000000/like--v1.png"
             }
-            alt={isFav ? "dislike" : "like"}
+            alt={movie.isFave ? "dislike" : "like"}
           />
         </button>
       </div>

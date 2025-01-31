@@ -11,9 +11,9 @@ interface MovieListProps {
 const MovieList: React.FC<MovieListProps> = ({ movies }) => {
   return (
     <div className="movies-container">
-      {movies.map((movie, index) => (
-        <MovieCard key={movie.imdbID} movie={movie} isFav={index % 2 !== 0} />
-      ))}
+      {movies.map((movie) => {
+        return <MovieCard key={movie.imdbID} movie={movie} />;
+      })}
     </div>
   );
 };

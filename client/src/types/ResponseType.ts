@@ -26,4 +26,5 @@ export type Movie = {
   Type: string;
   totalSeasons?: string;
   Response: string;
+  isFave: boolean;
 };
