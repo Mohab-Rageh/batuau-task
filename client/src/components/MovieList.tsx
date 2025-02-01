@@ -12,7 +12,9 @@ const MovieList: React.FC<MovieListProps> = ({ movies }) => {
   return (
     <div className="movies-container">
       {movies.map((movie) => {
-        return <MovieCard key={movie.imdbID} movie={movie} />;
+        return (
+          <MovieCard onFavClick={() => {}} key={movie.imdbID} movie={movie} />
+        );
       })}
     </div>
   );

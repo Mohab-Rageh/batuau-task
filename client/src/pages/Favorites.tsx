@@ -1,20 +1,16 @@
-// pages/Favorites.tsx
-
 import React from "react";
-import { Movie } from "../types/ResponseType";
-import MovieCard from "../components/MovieCard";
+import Navbar from "../components/NavBar";
 
-interface FavoritesProps {
-  favMovies: Movie[];
-}
-
-const Favorites: React.FC<FavoritesProps> = ({ favMovies }) => {
+const Favorites: React.FC = () => {
   return (
-    <div className="movies-container">
-      {favMovies.map((movie) => (
-        <MovieCard key={movie.imdbID} movie={movie} />
-      ))}
-    </div>
+    <>
+      <Navbar />
+      <div className="movies-container">
+        {/* {favMovies.map((movie) => (
+          <MovieCard key={movie.imdbID} movie={movie} />
+        ))} */}
+      </div>
+    </>
   );
 };
 
