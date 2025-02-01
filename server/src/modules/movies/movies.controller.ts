@@ -46,7 +46,7 @@ export class MovieController {
   @Delete(":id")
   async deleteFavoriteMovie(@Param("id") id: number) {
     try {
-      return await this.movieService.deleteFavoriteMovie(id);
+      return await this.movieService.deleteFavoriteMovie(Number(id));
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

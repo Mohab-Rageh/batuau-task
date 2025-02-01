@@ -29,6 +29,8 @@ const Favorites: React.FC = () => {
           <MovieCard
             onFavClick={async () => {
               await api.delete(`/${movie.id}`);
+
+              setMovie((prev) => prev.filter((m) => m.id !== movie.id));
             }}
             key={movie.title}
             movie={movie}
