@@ -22,7 +22,6 @@ export class MovieController {
   @Post("")
   async saveFavoriteMovie(@Body() movieData: { movie: Movie }) {
     try {
-      console.log(movieData.movie);
       return await this.movieService.saveFavoriteMovie(movieData.movie);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -47,6 +46,18 @@ export class MovieController {
   async deleteFavoriteMovie(@Param("id") id: number) {
     try {
       return await this.movieService.deleteFavoriteMovie(Number(id));
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Put(":id")
+  async updateFavoriteMovie(
+    @Param("id") id: number,
+    @Body() data: { data: Movie }
+  ) {
+    try {
+      return await this.movieService.updateFavoriteMovie(Number(id), data.data);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

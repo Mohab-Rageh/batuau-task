@@ -27,6 +27,7 @@ const Favorites: React.FC = () => {
       <div className="movies-container">
         {movie.map((movie) => (
           <MovieCard
+            withEdit
             onFavClick={async () => {
               await api.delete(`/${movie.id}`);
 
@@ -34,6 +35,14 @@ const Favorites: React.FC = () => {
             }}
             key={movie.title}
             movie={movie}
+            update={async (data) => {
+              await api.put(`/${movie.id}`, {
+                data,
+              });
+              setMovie((prev) =>
+                prev.map((m) => (m.id === movie.id ? { ...m, ...data } : m))
+              );
+            }}
           />
         ))}
       </div>

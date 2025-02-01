@@ -66,4 +66,15 @@ export class MovieService {
       where: { id },
     });
   }
+
+  async updateFavoriteMovie(id: number, data: Movie) {
+    return this.prisma.movie.update({
+      where: { id },
+      data: {
+        title: data.title,
+        poster: data.poster ? data.poster : undefined,
+        year: data.year,
+      },
+    });
+  }
 }
