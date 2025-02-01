@@ -1,7 +1,7 @@
 // src/movie/movie.service.ts
 
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../../services/prisma.service";
+import { PrismaService } from "../prisma/prisma.service";
 import axios from "axios";
 import * as dotenv from "dotenv";
 import { Movie } from "@prisma/client";
