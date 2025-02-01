@@ -1,6 +1,6 @@
 // components/MovieCard.tsx
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Movie } from "../types/ResponseType";
 
 interface MovieCardProps {
@@ -10,6 +10,10 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie, onFavClick }) => {
   const [isFave, setIsFave] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    setIsFave(false);
+  }, [movie]);
   return (
     <div className="movie-card">
       {onFavClick && (
@@ -34,9 +38,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onFavClick }) => {
           </button>
         </div>
       )}
-      <img src={movie.Poster} alt={movie.Title} />
-      <h3>{movie.Title}</h3>
-      <p>Year: {movie.Year}</p>
+      <img src={movie.poster} alt={movie.title} />
+      <h3>{movie.title}</h3>
+      <p>Year: {movie.year}</p>
     </div>
   );
 };

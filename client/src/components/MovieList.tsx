@@ -13,7 +13,7 @@ const MovieList: React.FC<MovieListProps> = ({ movies }) => {
     <div className="movies-container">
       {movies.map((movie) => {
         return (
-          <MovieCard onFavClick={() => {}} key={movie.imdbID} movie={movie} />
+          <MovieCard onFavClick={() => {}} key={movie.title} movie={movie} />
         );
       })}
     </div>

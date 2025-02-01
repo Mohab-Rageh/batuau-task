@@ -10,14 +10,25 @@ function SearchMovie() {
   const [movie, setMovie] = useState<Movie | undefined>();
 
   const fetchData = debounce(async (newQuery: string) => {
-    const response = await api.get("", {
+    const response = await api.get<{
+      Title: string;
+      Year: string;
+      Poster?: string;
+      Error?: string;
+    }>("", {
       params: {
         query: newQuery,
       },
     });
 
     if (response.data.Error) return;
-    setMovie(response.data);
+
+    setMovie({
+      id: 0,
+      title: response.data.Title,
+      poster: response.data.Poster,
+      year: response.data.Year,
+    });
   }, 500);
 
   const handleQueryChange = async (newQuery: string) => {
