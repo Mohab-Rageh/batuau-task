@@ -40,7 +40,11 @@ export class MovieService {
 
   async saveFavoriteMovie(data: Movie) {
     return this.prisma.movie.create({
-      data,
+      data: {
+        title: data.title,
+        poster: data.poster,
+        year: data.year,
+      },
     });
   }
 
@@ -49,7 +53,6 @@ export class MovieService {
 
     return this.prisma.movie.findMany({
       where: {
-        isFave: true,
         title: {
           contains: query,
           mode: "insensitive",

@@ -20,9 +20,10 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Post("")
-  async saveFavoriteMovie(@Body() movieData: Movie) {
+  async saveFavoriteMovie(@Body() movieData: { movie: Movie }) {
     try {
-      return await this.movieService.saveFavoriteMovie(movieData);
+      console.log(movieData.movie);
+      return await this.movieService.saveFavoriteMovie(movieData.movie);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
