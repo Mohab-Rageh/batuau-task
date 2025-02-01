@@ -1,69 +1,67 @@
-// src/movie/movie.service.ts
-
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import axios from "axios";
 import * as dotenv from "dotenv";
 import { Movie } from "@prisma/client";
 
-// Load environment variables
 dotenv.config();
 
 @Injectable()
 export class MovieService {
-  private readonly omdbApiKey = process.env.OMDB_API_KEY; // Use environment variable
+  private readonly omdbApiKey = process.env.OMDB_API_KEY;
   private readonly omdbUrl = "http://www.omdbapi.com/";
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async getMovieDetails(query: string) {
+  async getMoviesFromOMDb(query: string) {
     if (!this.omdbApiKey) {
-      throw new Error("OMDb API key is not configured");
+      throw new HttpException(
+        "OMDb API key is not configured",
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
 
     try {
       const response = await axios.get(this.omdbUrl, {
         params: {
-          s: query, // Search query (movie name)
-          apiKey: this.omdbApiKey, // Fetch API key from environment variable
+          s: query,
+          apiKey: this.omdbApiKey,
         },
       });
 
       if (response.data.Response === "False") {
-        throw new Error("Movie not found");
+        throw new HttpException("Movie not found", HttpStatus.NOT_FOUND);
       }
 
       return response.data.Search;
     } catch (error) {
-      throw new Error("Error fetching movie data from OMDb API");
+      throw new HttpException(
+        "Error fetching movie data from OMDb API",
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 
-  // Save a movie as a favorite
   async saveFavoriteMovie(data: Movie) {
     return this.prisma.movie.create({
       data,
     });
   }
 
-  // Get all favorite movies
-  async getFavoriteMovies() {
+  async getMovies(query: string, onlyFav: boolean) {
+    if (!onlyFav) return this.getMoviesFromOMDb(query);
+
     return this.prisma.movie.findMany({
       where: {
         isFave: true,
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
       },
     });
   }
 
-  // Update details of a favorite movie
-  async updateFavoriteMovie(id: number, movieData: Movie) {
-    return this.prisma.movie.update({
-      where: { id },
-      data: movieData,
-    });
-  }
-
-  // Delete a favorite movie
   async deleteFavoriteMovie(id: number) {
     return this.prisma.movie.delete({
       where: { id },

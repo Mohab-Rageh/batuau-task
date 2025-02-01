@@ -10,6 +10,7 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  Query,
 } from "@nestjs/common";
 import { MovieService } from "./movies.service";
 import { Movie } from "@prisma/client";
@@ -18,8 +19,7 @@ import { Movie } from "@prisma/client";
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
-  // Save a favorite movie
-  @Post("favorite")
+  @Post("")
   async saveFavoriteMovie(@Body() movieData: Movie) {
     try {
       return await this.movieService.saveFavoriteMovie(movieData);
@@ -28,28 +28,21 @@ export class MovieController {
     }
   }
 
-  // Get all favorite movies
-  @Get("favorites")
-  async getFavoriteMovies() {
+  @Get("")
+  async getFavoriteMovies(
+    @Query("onlyFav") onlyFav: string,
+    @Query("query") query: string
+  ) {
     try {
-      return await this.movieService.getFavoriteMovies();
+      const onlyFavBool = onlyFav === "true";
+
+      return await this.movieService.getMovies(query, onlyFavBool);
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  // Update details of a favorite movie
-  @Put("favorite/:id")
-  async updateFavoriteMovie(@Param("id") id: number, @Body() movieData: Movie) {
-    try {
-      return await this.movieService.updateFavoriteMovie(id, movieData);
-    } catch (error) {
-      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  // Delete a favorite movie
-  @Delete("favorite/:id")
+  @Delete(":id")
   async deleteFavoriteMovie(@Param("id") id: number) {
     try {
       return await this.movieService.deleteFavoriteMovie(id);

@@ -16,7 +16,7 @@ datasource db {
 model Movie {
   id        Int      @id @default(autoincrement())
   title     String
-  poster    String
+  poster    String?
   year      String
   isFave    Boolean  @default(true)
   createdAt DateTime @default(now())
