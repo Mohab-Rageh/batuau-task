@@ -31,12 +31,19 @@ export class MovieController {
   @Get("")
   async getMovies(
     @Query("onlyFav") onlyFav: string,
+    @Query("limit") limit: number,
+    @Query("page") page: number,
     @Query("query") query: string
   ) {
     try {
       const onlyFavBool = onlyFav === "true";
 
-      return await this.movieService.getMovies(query, onlyFavBool);
+      return await this.movieService.getMovies({
+        query,
+        onlyFav: onlyFavBool,
+        limit,
+        page,
+      });
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

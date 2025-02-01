@@ -48,7 +48,17 @@ export class MovieService {
     });
   }
 
-  async getMovies(query: string, onlyFav: boolean) {
+  async getMovies({
+    query,
+    onlyFav,
+    limit,
+    page,
+  }: {
+    query: string;
+    onlyFav: boolean;
+    limit: number;
+    page: number;
+  }) {
     if (!onlyFav) return this.getMoviesFromOMDb(query);
 
     return this.prisma.movie.findMany({
@@ -58,6 +68,8 @@ export class MovieService {
           mode: "insensitive",
         },
       },
+      take: limit,
+      skip: (page - 1) * limit,
     });
   }
 
