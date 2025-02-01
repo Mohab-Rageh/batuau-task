@@ -10,6 +10,7 @@ dotenv.config();
 export class MovieService {
   private readonly omdbApiKey = process.env.OMDB_API_KEY;
   private readonly omdbUrl = "http://www.omdbapi.com/";
+  private cache = new Map<string, any>();
 
   constructor(private readonly prisma: PrismaService) {}
 
@@ -21,6 +22,10 @@ export class MovieService {
       );
     }
 
+    if (this.cache.has(query)) {
+      return this.cache.get(query);
+    }
+
     try {
       const response = await axios.get(this.omdbUrl, {
         params: {
@@ -28,6 +33,8 @@ export class MovieService {
           t: query || "",
         },
       });
+
+      this.cache.set(query, response.data);
 
       return response.data;
     } catch (error) {
