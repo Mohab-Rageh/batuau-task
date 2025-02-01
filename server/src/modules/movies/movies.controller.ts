@@ -29,7 +29,7 @@ export class MovieController {
   }
 
   @Get("")
-  async getFavoriteMovies(
+  async getMovies(
     @Query("onlyFav") onlyFav: string,
     @Query("query") query: string
   ) {

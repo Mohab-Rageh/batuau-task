@@ -24,16 +24,12 @@ export class MovieService {
     try {
       const response = await axios.get(this.omdbUrl, {
         params: {
-          s: query,
           apiKey: this.omdbApiKey,
+          t: query || "",
         },
       });
 
-      if (response.data.Response === "False") {
-        throw new HttpException("Movie not found", HttpStatus.NOT_FOUND);
-      }
-
-      return response.data.Search;
+      return response.data;
     } catch (error) {
       throw new HttpException(
         "Error fetching movie data from OMDb API",
