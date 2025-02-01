@@ -58,13 +58,13 @@ export class MovieService {
   async getMovies({
     query,
     onlyFav,
-    limit,
-    page,
+    limit = 100,
+    page = 1,
   }: {
     query: string;
     onlyFav: boolean;
-    limit: number;
-    page: number;
+    limit?: number;
+    page?: number;
   }) {
     if (!onlyFav) return this.getMoviesFromOMDb(query);
 
